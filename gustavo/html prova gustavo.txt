@@ -1,0 +1,158 @@
+html
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Venda de Produto</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+
+<script>
+  function filterPrompts() {
+    var input = document.getElementById('searchInput').value.toUpperCase();
+    var Prompts = document.getElementsByClassName('Prompt');
+    
+    for (var i = 0; i < Prompts.length; i++) {
+      var h3 = Prompts[i].getElementsByTagName('h3')[0];
+      
+      if (h3.innerHTML.toUpperCase().indexOf(input) > -1) {
+        Prompts[i].style.display = "";
+      } else {
+        Prompts[i].style.display = "none";
+      }
+    }
+  }
+</script>
+
+
+
+
+  <head>
+<body>
+  <div class="header">
+
+  <div class="logo-tittle">
+ <a href=""> <h3>Sanches Autos</h3></a>
+</div>
+  </div>
+<div class="search-bar">
+
+        <input type="text" placeholder="Buscar Veiculos" id="searchInput" onkeyup="filterPrompts( )">
+        <select id="categorySelect" class="select-category" onchange="filterPrompts( )">
+      <option value="Todos">Todos</option>
+     
+
+</select>
+</div>
+
+<div class="desc">
+  <h3>Anunciar Veiculo</h3>
+  <input type="text" id="nomeProduto" placeholder="Nome Veiculo">
+  <input type="text" id="precoProduto" placeholder="Preço">
+  <input type="text" id="descricaoProduto" placeholder="Descrição">
+  <input type="text" id="categoriaProduto" placeholder="Categoria (ex: Carro,Moto,Caminhão)">
+  <input type="text" id="imagemProduto" placeholder="Adicionar Imagens">
+  <button onclick="adicionarProduto()">Adicionar</button>
+</div>
+
+
+<div class="content">
+
+<div class="Prompt">
+
+  <div class="label">Veiculos</div>
+<div class="Prompt-image">
+  <img src="assets/imagens/abrcadabra-removebg-preview.png" alt="descrição da imagem">
+</div>
+<div class="Prompt-info">
+  <h3>Exemplo nome de Produto Camaro</h3>
+  <p>R$ 128.500.00</p>
+</div>
+<div class="Prompt-description">
+  <p>Aqui a descrição. Camaro 6.2V8 Amarelo Ano:2017 </p>
+</div>
+<div>
+<a class="subscribe-button"  href="">ver compelto</a>
+</div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+<div class="footer">
+<div class="footer-wraper">
+<p>2025 - João G, ADS</p>
+<div class="logo-tittle">
+<a href=""><h3>Leilão</h3></a>
+</div>
+
+
+<script>
+  function carregarProdutos() {
+    const lista = JSON.parse(localStorage.getItem("produtos")) || [];
+    const container = document.querySelector(".content");
+
+    lista.forEach((produto, index) => {
+      const novo = document.createElement("div");
+      novo.className = "Prompt";
+      novo.innerHTML = `
+        <div class="label">${produto.categoria}</div>
+        <div class="Prompt-image">
+          <img src="${produto.imagem}" alt="Imagem do produto">
+        </div>
+        <div class="Prompt-info">
+          <h3>${produto.nome}</h3>
+          <p>R$ ${produto.preco}</p>
+        </div>
+        <div class="Prompt-description">
+          <p>${produto.descricao}</p>
+        </div>
+        <div>
+          <a class="subscribe-button" href="#">Ver completo</a>
+          <button class="excluir-button" onclick="excluirProduto(${index})">Excluir</button>
+        </div>
+      `;
+      container.appendChild(novo);
+    });
+  }
+
+  function adicionarProduto() {
+    const nome = document.getElementById('nomeProduto').value;
+    const preco = document.getElementById('precoProduto').value;
+    const descricao = document.getElementById('descricaoProduto').value;
+    const categoria = document.getElementById('categoriaProduto').value;
+    const imagem = document.getElementById('imagemProduto').value;
+
+    if (!nome || !preco || !descricao || !categoria || !imagem) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+
+    const novoProduto = { nome, preco, descricao, categoria, imagem };
+    const lista = JSON.parse(localStorage.getItem("produtos")) || [];
+    lista.push(novoProduto);
+    localStorage.setItem("produtos", JSON.stringify(lista));
+    location.reload(); 
+  }
+
+  function excluirProduto(index) {
+    const lista = JSON.parse(localStorage.getItem("produtos")) || [];
+    lista.splice(index, 1);
+    localStorage.setItem("produtos", JSON.stringify(lista));
+    location.reload(); 
+  }
+
+  window.onload = carregarProdutos;
+</script>
+
+
+
+</body>
+  </head>
